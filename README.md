@@ -2,7 +2,9 @@
 
 ![screenshot](wasm4-screenshot.png)
 
-* [The Zig language](https://ziglang.org/)
+## Prerequisites
+
+* [The Zig language](https://ziglang.org/) - needs a recent build with [this change](https://github.com/ziglang/zig/commit/e89e3735f3faead04e7b2e443a1795213c927ec8)
 * [WASM-4: Build retro games using WebAssembly for a fantasy console](https://wasm4.org/)
 
 ## Build and run
