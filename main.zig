@@ -14,7 +14,7 @@ var frame_count: u32 = 0;
 var gamepad_prev_state: u8 = 0;
 
 var snake: Snake = undefined;
-var banana: Point = undefined;
+var fruit: Point = undefined;
 
 export fn start() void {
     fba = std.heap.FixedBufferAllocator.init(&buffer);
@@ -28,7 +28,7 @@ export fn start() void {
     snake.body.append(Point{ .x=1, .y=0 }) catch unreachable;
     snake.body.append(Point{ .x=0, .y=0 }) catch unreachable;
 
-    banana = new_banana();
+    fruit = new_fruit();
 
     w4.PALETTE[0] = 0xfbf7f3;
     w4.PALETTE[1] = 0xe5b083;
@@ -36,15 +36,15 @@ export fn start() void {
     w4.PALETTE[3] = 0x20283d;
 }
 
-fn new_banana() Point {
+fn new_fruit() Point {
     while (true) {
-        const b = Point{
+        const f = Point{
             .x = random.intRangeLessThan(i32, 0, 20),
             .y = random.intRangeLessThan(i32, 0, 20),
         };
 
-        if (!snake.collides_with(b)) {
-            return b;
+        if (!snake.collides_with(f)) {
+            return f;
         }
     }
 }
@@ -66,12 +66,8 @@ export fn update() void {
     }
     snake.draw();
 
-    w4.DRAW_COLORS.* = 2;
-    w4.blit(&image_banana[0], banana.x * 8, banana.y * 8, 8, 8, w4.BLIT_1BPP);
-
-    const mem_text = std.fmt.allocPrint(allocator, "fba.end_index: {}", .{ fba.end_index }) catch unreachable;
-    defer allocator.free(mem_text);
-    w4.text(mem_text, 0, 150);
+    w4.DRAW_COLORS.* = 0x4320;
+    w4.blit(&fruit_sprite[0], fruit.x * 8, fruit.y * 8, 8, 8, w4.BLIT_2BPP);
 
     frame_count += 1;
 }
@@ -91,16 +87,7 @@ fn handle_input(just_pressed: u8) void {
     }
 }
 
-const image_banana = [8]u8{
-    0b11100011,
-    0b11110111,
-    0b11101011,
-    0b11101011,
-    0b11101011,
-    0b11101011,
-    0b11011011,
-    0b11000111,
-};
+const fruit_sprite = [16]u8 { 0x00,0xa0,0x02,0x00,0x0e,0xf0,0x36,0x5c,0xd6,0x57,0xd5,0x57,0x35,0x5c,0x0f,0xf0 };
 
 const Point = struct {
     x: i32,
@@ -155,9 +142,9 @@ const Snake = struct {
             return;
         }
 
-        if (std.meta.eql(next_head, banana)) {
+        if (std.meta.eql(next_head, fruit)) {
             self.body.append(self.body.items[self.body.items.len - 1]) catch unreachable;
-            banana = new_banana();
+            fruit = new_fruit();
         }
 
         var i: usize = self.body.items.len - 1;
