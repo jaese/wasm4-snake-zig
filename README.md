@@ -1,3 +1,8 @@
+# Visit here for updated resources for Zig on WASM-4
+
+* [WASM-4 Documentation - Snake Tutorial](https://wasm4.org/docs/tutorials/snake/goal)
+* [WASM-4 Tutorial Games](https://github.com/christopher-kleine/wasm-4-tutorial-games)
+
 # WASM-4 Tutorial Snake game written in Zig
 
 ![screenshot](wasm4-screenshot.png)
